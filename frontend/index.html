@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="description" content="UniScribe - Gravador de aulas com transcrição e resumo inteligente por IA para estudantes.">
+  <title>UniScribe — Gravador e Resumo de Aulas com IA</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'><path d='M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z'/><path d='M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z'/></svg>">
+</head>
+<body class="theme-light">
+  <div class="app-container">
+    <!-- Top App Bar -->
+    <header class="top-bar">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1 class="brand-title">UniScribe</h1>
+          <span class="brand-tag">MVP Acadêmico</span>
+        </div>
+      </div>
+
+      <div class="top-bar-actions">
+        <!-- Backend Status Badge -->
+        <div id="backendBadge" class="status-chip chip-offline" title="Status de conexão com o backend Python (127.0.0.1:8080)">
+          <span class="chip-dot"></span>
+          <span class="chip-label" id="backendBadgeLabel">Verificando...</span>
+        </div>
+
+        <!-- Network Online Status -->
+        <div id="networkBadge" class="status-chip chip-online" title="Conexão com a Internet">
+          <span class="chip-dot"></span>
+          <span class="chip-label" id="networkBadgeLabel">Online</span>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" class="icon-btn" title="Alternar tema claro/escuro" aria-label="Alternar tema">
+          <svg id="sunIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="moonIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <!-- Settings Button -->
+        <button id="settingsBtn" class="icon-btn" title="Configurações do aplicativo" aria-label="Configurações">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Content (State-Driven) -->
+    <main class="main-content">
+      
+      <!-- STATE 1: IDLE / READY TO LISTEN -->
+      <section id="stateIdle" class="view-state active">
+        <div class="hero-card">
+          <div class="lecture-meta-inputs">
+            <div class="input-group">
+              <label for="lectureTitleInput">Título da Aula</label>
+              <input type="text" id="lectureTitleInput" class="text-input" placeholder="Ex: Cálculo I — Derivadas e Integrais" value="Aula de Redes — Camada de Transporte">
+            </div>
+            <div class="input-row">
+              <div class="input-group half">
+                <label for="courseSelect">Disciplina</label>
+                <select id="courseSelect" class="select-input">
+                  <option value="redes">Redes de Computadores</option>
+                  <option value="calculo">Cálculo Diferencial</option>
+                  <option value="algoritmos">Algoritmos & Estruturas</option>
+                  <option value="direito">Direito Constitucional</option>
+                  <option value="geral">Geral / Outros</option>
+                </select>
+              </div>
+              <div class="input-group half">
+                <label for="languageSelect">Idioma da Fala</label>
+                <select id="languageSelect" class="select-input">
+                  <option value="pt-BR" selected>Português (Brasil)</option>
+                  <option value="en-US">English (US)</option>
+                  <option value="es-ES">Español</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Central Big Button: Start Listening -->
+          <div class="action-center">
+            <div class="mic-glow-container">
+              <button id="startListeningBtn" class="primary-round-btn" aria-label="Iniciar Gravação">
+                <span class="mic-pulse"></span>
+                <svg viewBox="0 0 24 24" width="44" height="44" fill="currentColor">
+                  <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                  <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                </svg>
+              </button>
+            </div>
+            <h2 class="action-title">Start Listening</h2>
+            <p class="action-subtitle">Toque para gravar a aula. A IA transcreverá e gerará o resumo ao final.</p>
+          </div>
+
+          <div class="privacy-note">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+            </svg>
+            <span>Privacidade: o áudio é processado sob demanda apenas quando você inicia uma gravação. Nenhuma chave de IA fica no dispositivo.</span>
+          </div>
+        </div>
+
+        <!-- Quick Demo / Fixture Shortcuts -->
+        <div class="quick-samples-card">
+          <span class="samples-title">Testar com exemplo pré-carregado:</span>
+          <div class="samples-buttons">
+            <button class="sample-chip" data-sample="redes">Aula de Redes (TCP vs UDP)</button>
+            <button class="sample-chip" data-sample="calculo">Aula de Cálculo (Limites)</button>
+            <button class="sample-chip" data-sample="direito">Aula de Direito (Princípios)</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATE 2: RECORDING / LISTENING -->
+      <section id="stateListening" class="view-state">
+        <div class="recording-card">
+          <div class="recording-header">
+            <div class="recording-badge">
+              <span class="pulsing-red-dot"></span>
+              <span class="recording-label">GRAVANDO AULA</span>
+            </div>
+            <div id="recordingTimer" class="timer-display">00:00:00</div>
+          </div>
+
+          <div class="recording-topic">
+            <span class="topic-tag" id="currentTopicTag">Redes de Computadores</span>
+            <h3 class="topic-title" id="currentTopicTitle">Aula de Redes — Camada de Transporte</h3>
+          </div>
+
+          <!-- Waveform Canvas -->
+          <div class="waveform-container">
+            <canvas id="waveformCanvas" width="600" height="140"></canvas>
+            <div class="waveform-overlay">
+              <span class="db-indicator" id="dbIndicator">Captação ativa: Microfone em tempo real</span>
+            </div>
+          </div>
+
+          <!-- Live transcription buffer / preview box -->
+          <div class="live-transcript-box">
+            <div class="box-header">
+              <span class="box-title">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M19 2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h4l3 3 3-3h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 16h-4.83l-.59.59L12 20.17l-1.59-1.59-.58-.58H5V4h14v14zm-8-3h2v2h-2zm0-8h2v6h-2z"/>
+                </svg>
+                Buffer de Transcrição
+              </span>
+              <span class="box-badge">Foco na fala do professor</span>
+            </div>
+            <p id="liveTranscriptText" class="transcript-stream">
+              Capturando fala do microfone... O áudio é armazenado em memória local de forma segura e resiliente. Ruídos secundários e hesitações serão filtrados automaticamente ao finalizar.
+            </p>
+          </div>
+
+          <!-- Stop Button -->
+          <div class="stop-center">
+            <button id="stopListeningBtn" class="stop-btn" aria-label="Finalizar Gravação">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                <rect x="6" y="6" width="12" height="12" rx="2" />
+              </svg>
+              <span>Stop</span>
+            </button>
+            <p class="stop-hint">Ao tocar em Stop, o processamento de IA gerará o resumo automaticamente.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATE 3: PROCESSING... -->
+      <section id="stateProcessing" class="view-state">
+        <div class="processing-card">
+          <div class="spinner-container">
+            <div class="ai-orbit-spinner">
+              <div class="orbit-circle orbit-1"></div>
+              <div class="orbit-circle orbit-2"></div>
+              <div class="orbit-center">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41a7.98 7.98 0 0 1 4.9 10.8z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <h2 class="processing-title">Processing...</h2>
+          <p class="processing-subtitle" id="processingStatusText">Sintetizando transcrição e gerando resumo acadêmico...</p>
+
+          <!-- Pipeline Step Visualizer -->
+          <div class="pipeline-steps">
+            <div class="step-item step-completed" id="stepAudio">
+              <div class="step-icon">✓</div>
+              <div class="step-content">
+                <div class="step-name">1. Captura de Áudio</div>
+                <div class="step-desc">Áudio registrado com sucesso</div>
+              </div>
+            </div>
+            <div class="step-item step-active" id="stepWhisper">
+              <div class="step-icon">⟳</div>
+              <div class="step-content">
+                <div class="step-name">2. Transcrição (Whisper/ASR)</div>
+                <div class="step-desc" id="whisperStepDesc">Convertendo voz em texto em português...</div>
+              </div>
+            </div>
+            <div class="step-item" id="stepFilter">
+              <div class="step-icon">○</div>
+              <div class="step-content">
+                <div class="step-name">3. Filtro de Ruído & Relevância</div>
+                <div class="step-desc">Eliminando cacoetes e preservando definições</div>
+              </div>
+            </div>
+            <div class="step-item" id="stepGemini">
+              <div class="step-icon">○</div>
+              <div class="step-content">
+                <div class="step-name">4. Resumo Estruturado (Gemini ou fallback local)</div>
+                <div class="step-desc">Organizando tópicos, conceitos e pontos para provas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATE 4: SUMMARY & RESULTS READY -->
+      <section id="stateReady" class="view-state">
+        <div class="results-card">
+          <!-- Summary Header & Quick Actions -->
+          <div class="results-header">
+            <div class="results-info">
+              <div class="results-meta">
+                <span class="meta-tag course-tag" id="readyCourseTag">Redes de Computadores</span>
+                <span class="meta-date" id="readyDateTag">Hoje, 09:30</span>
+                <span class="meta-duration" id="readyDurationTag">45 min</span>
+              </div>
+              <h2 class="results-title" id="readyLectureTitle">Aula de Redes — Camada de Transporte</h2>
+            </div>
+
+            <!-- Main Actions: Copy & Export .txt -->
+            <div class="results-actions-top">
+              <button id="copySummaryBtn" class="action-btn btn-secondary" title="Copiar resumo estruturado para a área de transferência">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy</span>
+              </button>
+
+              <button id="exportTxtBtn" class="action-btn btn-primary" title="Exportar como arquivo .txt limpo">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Export .txt</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Segmented Tab Navigation -->
+          <div class="tab-bar">
+            <button class="tab-btn active" data-tab="tabSummary">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+              </svg>
+              <span>Resumo Estruturado</span>
+            </button>
+            <button class="tab-btn" data-tab="tabFiltered">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+              </svg>
+              <span>Transcrição Filtrada</span>
+            </button>
+            <button class="tab-btn" data-tab="tabRaw">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+              </svg>
+              <span>Transcrição Bruta (Raw)</span>
+            </button>
+          </div>
+
+          <!-- TAB 1: Structured Summary Content -->
+          <div id="tabSummary" class="tab-content active">
+            
+            <!-- Uncertainty Notice (Only visible when uncertainties detected) -->
+            <div id="uncertaintyAlert" class="alert-box alert-warning" style="display:none;">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-text">
+                <strong>Atenção a Incertezas:</strong>
+                <span id="uncertaintyAlertMsg">O professor indicou pontos em aberto ou conceitos sujeitos a confirmação.</span>
+              </div>
+            </div>
+
+            <!-- Section 1: Conceitos Principais -->
+            <div class="summary-section">
+              <div class="section-title">
+                <span class="title-bullet">💡</span>
+                <h3>Conceitos Principais & Definições</h3>
+              </div>
+              <ul class="concepts-list" id="summaryConceptsList">
+                <!-- Dynamically injected -->
+              </ul>
+            </div>
+
+            <!-- Section 2: Pontos Críticos e Fórmulas -->
+            <div class="summary-section">
+              <div class="section-title">
+                <span class="title-bullet">🎯</span>
+                <h3>Destaques de Prova & Fórmulas</h3>
+              </div>
+              <ul class="highlights-list" id="summaryHighlightsList">
+                <!-- Dynamically injected -->
+              </ul>
+            </div>
+
+            <!-- Section 3: Dúvidas da Aula -->
+            <div class="summary-section" id="questionsSection">
+              <div class="section-title">
+                <span class="title-bullet">❓</span>
+                <h3>Perguntas da Turma & Respostas do Docente</h3>
+              </div>
+              <ul class="questions-list" id="summaryQuestionsList">
+                <!-- Dynamically injected -->
+              </ul>
+            </div>
+
+            <!-- Section 4: Síntese Final -->
+            <div class="summary-section">
+              <div class="section-title">
+                <span class="title-bullet">📝</span>
+                <h3>Síntese Executiva</h3>
+              </div>
+              <div class="executive-summary" id="summaryExecutiveText">
+                <!-- Dynamically injected -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: Filtered Transcript -->
+          <div id="tabFiltered" class="tab-content">
+            <div class="transcript-meta-bar">
+              <span class="filter-badge">✓ Ruídos e cacoetes eliminados</span>
+              <span class="word-count" id="filteredWordCount">185 palavras relevantes</span>
+            </div>
+            <div class="transcript-article" id="filteredTranscriptContent">
+              <!-- Dynamically injected -->
+            </div>
+          </div>
+
+          <!-- TAB 3: Raw Transcript -->
+          <div id="tabRaw" class="tab-content">
+            <div class="transcript-meta-bar">
+              <span class="raw-badge">Texto integral do ASR</span>
+              <span class="word-count" id="rawWordCount">312 palavras registradas</span>
+            </div>
+            <div class="transcript-article raw-text" id="rawTranscriptContent">
+              <!-- Dynamically injected -->
+            </div>
+          </div>
+
+          <!-- Bottom bar: Reset / New recording -->
+          <div class="results-footer">
+            <button id="newLectureBtn" class="link-btn">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+              </svg>
+              <span>Gravar Nova Aula</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toast Notification Container -->
+      <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-backdrop" style="display:none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">Configurações do UniScribe</h3>
+          <button id="closeSettingsBtn" class="close-btn" aria-label="Fechar">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="setting-item">
+            <label for="backendUrlInput">Endpoint do Backend Python</label>
+            <input type="text" id="backendUrlInput" class="text-input" value="http://127.0.0.1:8080">
+            <span class="setting-hint">Serviço local com Gemini e Whisper em Python (`uniscribe.backend`).</span>
+          </div>
+
+          <div class="setting-item">
+            <label for="simulationToggle">Modo Demonstração / Offline Local</label>
+            <div class="toggle-row">
+              <input type="checkbox" id="simulationToggle" checked>
+              <label for="simulationToggle" class="toggle-label">Usar fallback com fixtures se o backend estiver pausado</label>
+            </div>
+            <span class="setting-hint">Permite testar o fluxo principal mesmo sem o backend rodando.</span>
+          </div>
+
+          <div class="setting-item">
+            <label>Sobre o UniScribe</label>
+            <p class="about-text">
+              MVP desenvolvido com foco em acessibilidade e transparência. Áudios gravados localmente, filtrados para eliminar distrações e sintetizados pela API do Gemini.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="saveSettingsBtn" class="action-btn btn-primary">Salvar e Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offline Alert Banner -->
+    <div id="offlineBanner" class="offline-banner" style="display:none;">
+      <span>⚠️ Sem conexão de internet detectada. A gravação continua normal localmente no aparelho.</span>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

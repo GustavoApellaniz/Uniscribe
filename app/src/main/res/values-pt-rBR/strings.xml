@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UniScribe</string>
+    <string name="app_subtitle">Grave uma aula e receba um resumo conciso.</string>
+    <string name="ready">Pronto para ouvir.</string>
+    <string name="start_listening">Começar a ouvir</string>
+    <string name="recording">Gravando</string>
+    <string name="recording_elapsed">Gravando • %1$s</string>
+    <string name="stop">Parar</string>
+    <string name="processing">Processando</string>
+    <string name="processing_detail">Enviando a gravação com segurança.</string>
+    <string name="summary">Resumo</string>
+    <string name="summary_empty">O resumo aparecerá aqui.</string>
+    <string name="summary_ready">Resumo pronto.</string>
+    <string name="copy">Copiar</string>
+    <string name="export">Exportar</string>
+    <string name="export_file_name">resumo_aula.txt</string>
+    <string name="export_mime_type">text/plain</string>
+    <string name="copied">Resumo copiado.</string>
+    <string name="export_success">Resumo exportado.</string>
+    <string name="export_error">Não foi possível exportar o resumo.</string>
+    <string name="permission_required">A permissão do microfone é necessária para ouvir.</string>
+    <string name="permission_denied">A permissão do microfone foi negada.</string>
+    <string name="recording_error">Não foi possível iniciar a gravação. Verifique o acesso ao microfone e tente novamente.</string>
+    <string name="processing_error">Não foi possível processar a gravação. Tente novamente.</string>
+    <string name="offline_error">Você parece estar offline. Verifique sua conexão e tente novamente.</string>
+    <string name="configuration_error">O backend de transcrição não está configurado.</string>
+    <string name="empty_response">O backend não retornou um resumo.</string>
+    <string name="recording_disclosure_title">Gravar áudio da aula</string>
+    <string name="recording_disclosure_message">O UniScribe grava áudio somente depois que você tocar em Continuar. A gravação será usada para criar uma transcrição e um resumo. Confirme que você tem autorização de todas as pessoas da aula.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="continue_label">Continuar</string>
+</resources>

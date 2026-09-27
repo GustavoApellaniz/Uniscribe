@@ -1,0 +1,20 @@
+# Publicação Play Store não é automatizada: assinatura, credenciais e
+# configuração da conta pertencem ao operador. Use android-ci.yml para a
+# verificação reproducible e docs/play-release.md para o checklist manual.
+name: Play release preparation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  preparation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Prepare and verify unsigned development build
+        run: ./gradlew test lint assembleDebug

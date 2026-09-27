@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UniScribe</string>
+    <string name="app_subtitle">Record a lecture and get a concise summary.</string>
+    <string name="ready">Ready to listen.</string>
+    <string name="start_listening">Start Listening</string>
+    <string name="recording">Recording</string>
+    <string name="recording_elapsed">Recording • %1$s</string>
+    <string name="stop">Stop</string>
+    <string name="processing">Processing</string>
+    <string name="processing_detail">Uploading the recording securely.</string>
+    <string name="summary">Summary</string>
+    <string name="summary_empty">Your summary will appear here.</string>
+    <string name="summary_ready">Summary ready.</string>
+    <string name="copy">Copy</string>
+    <string name="export">Export</string>
+    <string name="export_file_name">lecture_summary.txt</string>
+    <string name="export_mime_type">text/plain</string>
+    <string name="copied">Summary copied.</string>
+    <string name="export_success">Summary exported.</string>
+    <string name="export_error">Could not export the summary.</string>
+    <string name="permission_required">Microphone permission is required to listen.</string>
+    <string name="permission_denied">Microphone permission was denied.</string>
+    <string name="recording_error">Could not start recording. Check microphone access and try again.</string>
+    <string name="processing_error">Could not process the recording. Please try again.</string>
+    <string name="offline_error">You appear to be offline. Check your connection and try again.</string>
+    <string name="configuration_error">The transcription backend is not configured.</string>
+    <string name="empty_response">The backend returned no summary.</string>
+    <string name="recording_disclosure_title">Record lecture audio</string>
+    <string name="recording_disclosure_message">UniScribe records audio only after you tap Continue. The recording is used to create a transcript and summary. Make sure you have permission from everyone in the lecture.</string>
+    <string name="cancel">Cancel</string>
+    <string name="continue_label">Continue</string>
+</resources>
