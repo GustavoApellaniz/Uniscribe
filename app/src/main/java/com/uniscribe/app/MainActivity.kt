@@ -182,7 +182,7 @@ class MainActivity : Activity() {
             setTextColor(getColor(R.color.text_primary))
             textSize = 16f
             gravity = Gravity.TOP or Gravity.START
-            isTextSelectable = true
+            setTextIsSelectable(true)
             minHeight = dp(140)
             setPadding(dp(14), dp(14), dp(14), dp(14))
             setBackgroundColor(getColor(R.color.surface))
