@@ -1,8 +1,7 @@
 # UniScribe — interface do MVP
 
-O repositório tem três clientes: web estático (`frontend/`), Kivy
-(desktop/Buildozer) e Android nativo (`app/`). Todos expõem o mesmo fluxo
-mínimo:
+O repositório tem dois clientes: web estático (`frontend/`) e Android nativo
+(`app/`). Ambos expõem o mesmo fluxo mínimo:
 
 ```text
 Start Listening -> gravando -> Stop -> Processing... -> resumo -> Copy / Export .txt
@@ -30,18 +29,6 @@ microfone:
 python -m http.server 3000 --directory frontend
 ```
 
-## Kivy
-
-`uniscribe/screens/home.py` implementa os estados `idle`, `listening`,
-`processing`, `ready` e `error`. Recorder, transcriber, summariser,
-permission checker, network checker, clipboard e diretório de exportação são
-injetáveis. Isso permite testar a interface com dublês sem microfone, display
-Kivy ou rede.
-
-O `AudioRecorder` Python é um espaço reservado para o contrato de arquivo. Em um
-build Kivy Android, injete um adaptador que capture amostras reais; o cliente
-Android nativo já usa `MediaRecorder` e grava `.m4a` no cache do app.
-
 ## Android nativo
 
 O módulo `:app` usa Views nativas para evitar uma dependência de UI. Ele:
@@ -61,17 +48,16 @@ limitações está em `docs/android.md`.
 
 - Permissão negada: a tela continua utilizável e orienta como conceder a
   permissão depois.
-- Internet indisponível: o backend pode falhar explicitamente; o cliente Kivy
-  pode usar fallback local, enquanto o app Android mostra erro e preserva a
-  gravação apenas durante a requisição.
+- Internet indisponível: o backend pode falhar explicitamente; o app Android
+  mostra erro e preserva a gravação apenas durante a requisição.
 - Resposta vazia: o cliente não transforma um resultado vazio em sucesso.
 - Exportação: UTF-8 em arquivo `.txt`; o Android usa o seletor de documentos do
   sistema.
 
 ## Testes
 
-O fluxo Kivy é testado por compilação e smoke tests com dublês. O build Android
-deve ser executado em uma máquina com JDK, SDK e emulador/dispositivo:
+O build Android deve ser executado em uma máquina com JDK, SDK e
+emulador/dispositivo:
 
 ```bash
 ./gradlew test

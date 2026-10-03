@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "uniscribe"
 version = "0.1.0"
-description = "Backend Python and MVP clients for UniScribe"
+description = "Backend Python and Android client for UniScribe"
 requires-python = ">=3.10"
 dependencies = []
 

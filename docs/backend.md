@@ -16,7 +16,7 @@ testes usam fakes determinísticos.
                                            +-> [JSON para o app]
 ```
 
-O app Android/Kivy é o cliente. O processo Python é o limite que pode conter
+O app Android nativo é o cliente. O processo Python é o limite que pode conter
 `GEMINI_API_KEY`; a chave nunca deve ser colocada no APK, no código do cliente
 ou em uma resposta da API.
 
@@ -40,7 +40,7 @@ ou em uma resposta da API.
 
 | Problema | Opções | Comparação | Decisão | Justificativa |
 | --- | --- | --- | --- | --- |
-| Captura | `MediaRecorder`, `AudioRecord`, Kivy | `MediaRecorder` é simples; `AudioRecord` dá mais controle; Kivy facilita protótipo | Android `MediaRecorder` + limite Python | Menos código no MVP e captura real no cliente. |
+| Captura | `MediaRecorder`, `AudioRecord` | `MediaRecorder` é simples; `AudioRecord` dá mais controle, com mais código | Android `MediaRecorder` + limite Python | Menos código no MVP e captura real no cliente. |
 | ASR | Whisper local, ASR remoto, stub | Local preserva privacidade, mas exige modelo/CPU; remoto é mais simples, mas envia áudio; stub é determinístico | Adaptador injetado; stub por padrão | Testa o fluxo sem custo e permite escolher provedor real sem mudar a API. |
 | Gemini | API no app, API no backend, fallback local | App expõe segredo e é difícil de proteger; backend centraliza chave; fallback não depende de rede | Backend com `GEMINI_API_KEY` no ambiente | Reduz exposição de credenciais e permite fallback auditável. |
 | Persistência | Banco, arquivo, memória | Banco é durável e caro; arquivo exige criptografia; memória é simples e volátil | `MemoryStore` no MVP | Mantém o marco headless barato; adaptador durável é fase posterior. |
@@ -51,8 +51,7 @@ ou em uma resposta da API.
 **Problema:** o MVP precisa gravar sem transformar a UI em um gravador
 complexo.
 
-**Opções:** `AudioRecord`/`MediaRecorder` no Android, Kivy em Python ou um
-serviço remoto.
+**Opções:** `AudioRecord`/`MediaRecorder` no Android ou um serviço remoto.
 
 **Decisão:** o cliente Android captura o microfone e envia arquivo/chunks ao
 backend. `AudioRecorder` Python gerencia somente o contrato de caminho,

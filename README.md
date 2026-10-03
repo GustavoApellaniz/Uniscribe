@@ -26,7 +26,7 @@ pip install -r requirements-dev.txt
 # O servidor lê o ambiente do processo; para usar .env local:
 set -a; . ./.env; set +a
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. python -m pytest -q
-PYTHONPATH=. python main.py --backend
+PYTHONPATH=. python main.py
 ```
 
 O servidor escuta em `127.0.0.1:8080` por padrão. Endereços e provedores reais
@@ -34,17 +34,6 @@ são injetados em `LectureBackend`; o stub local não finge decodificar áudio. 
 cliente web local usa CORS restrito a `localhost:3000`/`127.0.0.1:3000`.
 Consulte `docs/backend.md` para os contratos JSON/multipart e para a pesquisa
 oficial datada.
-
-## Cliente Kivy
-
-```bash
-pip install -r requirements.txt
-PYTHONPATH=. python main.py
-```
-
-O cliente Kivy é útil para desktop e protótipo. A captura real do microfone em
-um dispositivo deve ser fornecida por um adaptador de plataforma; o
-`AudioRecorder` Python sozinho apenas gerencia o caminho temporário.
 
 ## Android nativo
 
@@ -77,11 +66,8 @@ uniscribe/
   data/         repositórios
   services/     áudio, ASR, filtro, resumo, Gemini e exportação
   backend.py    API HTTP local
-  screens/      UI Kivy
-app/            cliente Android nativo
+app/            cliente Android nativo (único cliente mobile do projeto)
 frontend/       cliente web estático (opcional)
-core/, data/, domain/, feature/  módulos Android legados não incluídos no
-                                build mínimo :app
 ```
 
 Consulte também `docs/backend.md`, `docs/android.md`,
